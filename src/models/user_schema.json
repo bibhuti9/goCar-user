@@ -1,0 +1,23 @@
+userProfile:{
+    name:{
+        type:String,
+    }
+    email:{
+        type:String,
+    },
+    phoneNumber:{
+        type:number
+    },
+    deviceToken:{
+        type:String
+    },
+    userUID:{
+        type:String
+    },
+    latitude:{
+        type:String
+    },
+    longititude:{
+        type:String
+    }
+}

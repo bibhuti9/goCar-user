@@ -1,0 +1,76 @@
+srBasicInfromation:{
+    name:{
+        type:String
+    },
+    email:{
+        type:String,
+    },
+    logo:{
+        type:String
+    },
+    address:{
+      type:String,  
+    },
+    deviceToken:{
+        type:String
+    },
+    latitude:{
+        type:String
+    },
+    longitude:{
+        type:String
+    },
+}
+srShopInfromation:{
+    storeOCStatus:{
+        type:Boolean
+    },
+    sunday:{O:7,C:7,OC:true},
+    monday:{O:7,C:7,OC:true},
+    tuesday:{O:7,C:7,OC:true},
+    wednesday:{O:7,C:7,OC:true},
+    thursday:{O:7,C:7,OC:true},
+    friday:{O:7,C:7,OC:true},
+    saturday:{O:7,C:7,OC:true},
+    servicesType:string
+}
+srServices:{
+    srUserId(FK):{
+        type:String
+    },
+    serviceId(PK):{
+        type:String
+    },
+    name:{
+        type:String
+    },
+    catName:{
+        type:String
+    },
+    tmTaken:{
+        type:String
+    },
+    warnty:{
+        type:Number
+    },
+    pickUpType:{
+        type:String
+    },
+    images:{
+        type:String
+    },
+    essentialService:{
+        type:String
+    },
+    price:{
+        type:Number
+    },
+    isDeleted:{
+        type:Boolean
+    },
+    isDisplay:{
+        type:Boolean
+    },
+}
+
+

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "925460624644",
+    "project_id": "instahair-6aa4d",
+    "storage_bucket": "instahair-6aa4d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925460624644:android:74f4ab6fb4d8e8d0354c51",
+        "android_client_info": {
+          "package_name": "com.instahair"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925460624644-g525hhsrf33bfagoltim0ov2igj51o3f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.instahair",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "925460624644-u3c60uagrknm5r1bvu9ikv45iihfu8as.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXQNAAenvg6RdaPwv9ANXC3zBDr8HqODg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925460624644-u3c60uagrknm5r1bvu9ikv45iihfu8as.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
