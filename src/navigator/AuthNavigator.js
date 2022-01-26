@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {Button, Text, StyleSheet, View,Image, SafeAreaView} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
-import FlashMessage from 'react-native-flash-message';
 import LinearGradient from 'react-native-linear-gradient';
 import LottieView from 'lottie-react-native';
 
@@ -45,7 +44,10 @@ export default function AuthNavigator() {
   }
 
   return loggedIn ? (
-    <HomeBottomStack />
+    <>
+      <HomeBottomStack />
+    </>
+
   ) : (
     <SafeAreaView style={{flex:1,}}>
         <LinearGradient

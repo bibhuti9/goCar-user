@@ -11,6 +11,7 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
+import FlashMessage from "react-native-flash-message";
 import { Icon, Label } from 'native-base';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -62,7 +63,7 @@ export default function DetailsOfShop({route, navigation }) {
         flex: 1,
         justifyContent: 'center',
       }}>
-      
+      <FlashMessage position="top" />
       <View
         style={{
           // flex: 1,
