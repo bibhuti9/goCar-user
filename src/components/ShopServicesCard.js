@@ -32,7 +32,7 @@ export default function ShopServicesCard(garageUID) {
   const [cards, setCards] = useState([]);
   const [rnsheet, setRnsheet] = useState([]);
   const refRBSheet = useRef();
-
+  const [garageToken, setGarageToken] = useState("");
   const [visible, setVisible] = useState(false);
 
   const showDialog = () => {
@@ -56,10 +56,14 @@ export default function ShopServicesCard(garageUID) {
         setCards(cardData.docs.map((values) => ({ ...values.data(), ['id']: values.id })))
       });
   }, []);
-
   useEffect(() => {
-    console.log(cards);
-  }, [cards]);
+    firestore()
+      .collection('srBasicInfromation')
+      .doc(garageUID['garageUID'])
+      .onSnapshot(srUser => {
+        setGarageToken(srUser.data().deviceToken);
+      })
+  }, []);
 
   return cards.map(value => {
     return (
@@ -82,8 +86,17 @@ export default function ShopServicesCard(garageUID) {
             <TouchableOpacity
               style={styles.TouchableOpacityStyle}
               onPress={() => {
-                setRnsheet(value);
-                refRBSheet.current.open();
+                fetch('http://ac6e-43-248-34-193.ngrok.io/send-noti', {
+                  method: 'post',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    token: garageToken,
+                  })
+                })
+                // setRnsheet(value);
+                // refRBSheet.current.open();
               }}>
               <Text
                 style={{
@@ -207,7 +220,7 @@ export default function ShopServicesCard(garageUID) {
                             srUserId: rnsheet.srUserId,
                             userUID: userUID.uid,
                             createdAt: date.getTime(),
-                            paymentMode: checked=="first"? 'Cash On Delivery' : 'Net Payment'
+                            paymentMode: checked == "first" ? 'Cash On Delivery' : 'Net Payment'
                           }).then(() => {
                             refRBSheet.current.close();
                             showMessage({
@@ -216,6 +229,7 @@ export default function ShopServicesCard(garageUID) {
                               type: "success",
                               icon: "success"
                             });
+
                           }).catch((error) => {
                             showMessage({
                               message: "Something Wents Wrong!",

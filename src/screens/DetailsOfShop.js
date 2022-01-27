@@ -47,16 +47,6 @@ export default function DetailsOfShop({route, navigation }) {
           })
       });
   }, []);
-
-  useEffect(() => {
-      console.log("**");
-    console.log(userData);
-    console.log("**");
-  }, [userData]);
-
-
-  
-
   return (
     <SafeAreaView
       style={{
