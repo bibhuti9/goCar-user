@@ -16,14 +16,14 @@ app.post('/send-noti',(req,res)=>{
     const message={
         token:req.body['token'],
         notification:{
-          body:`This Services is Booked !`,
+          body:`New Order Placed!`,
           title:"Go Car",
         }
      }
     
      admin.messaging().send(message).then(()=>{
          console.log('message send successfully');
-     })
+     }).catch((error)=>{console.log(error)})
 });
 
 app.listen(3030,()=>{
