@@ -202,6 +202,7 @@ dependencies {
     // implementation platform('com.google.firebase:firebase-bom:28.3.0')
     
     implementation project(':lottie-react-native')
+    implementation project(':react-native-share')
 
     compile project(':react-native-vector-icons')
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {

@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import auth from '@react-native-firebase/auth';
 import LinearGradient from 'react-native-linear-gradient';
 import LottieView from 'lottie-react-native';
+import FlashMessage from "react-native-flash-message";
 
 
 import HomeBottomStack from './HomeBottomStack';
@@ -62,7 +63,7 @@ export default function AuthNavigator() {
           }}
         >
           <View style={{flex:1}}>
-            <LottieView style={{
+            <Image style={{
               height: 200,
               width: 200,
             }}  source={require('../assets/img/logo.json')} />

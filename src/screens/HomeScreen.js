@@ -4,14 +4,12 @@ import { ICON_YELLOW_COLOR } from '@env';
 import {
   Text,
   Icon,
+  Label,
 } from 'native-base';
 import { Image, LogBox, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
-
 // Components
-
-
 import CardStoresList from '../components/cardStoresList';
 import TrendingCardList from '../components/trendingCardList'
 
@@ -38,10 +36,10 @@ export default function HomeScreen({navigation}) {
                 style={{
                   fontSize: 23,
                   color: '#312f2f',
-                }}></Icon>
+               }}></Icon>
             </TouchableOpacity>
             {/* Right User Profile LOGO */}
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate('profile')}>
               <Icon
                 type="FontAwesome5"
                 name="user"
@@ -51,6 +49,10 @@ export default function HomeScreen({navigation}) {
 
                 }}></Icon>
             </TouchableOpacity>
+          </View>
+          <View style={{marginHorizontal:10,marginVertical:10}}>
+            <Label style={{fontSize:25,fontWeight:'bold'}}>Hii</Label>
+            <Text style={{fontStyle:'italic'}}>Well Come To GO Car</Text>
           </View>
           {/* New Services Offer (Scroll View Horizontal) */}
           <View style={{ marginHorizontal: 10, marginVertical: 15, }}>
@@ -161,9 +163,6 @@ export default function HomeScreen({navigation}) {
     </View>
   );
 }
-
-
-
 const style = StyleSheet.create({
   headerICON: {
     flexDirection: 'row',
@@ -176,7 +175,6 @@ const style = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 10,
     padding: 10,
-
   },
   categoryCard: {
     marginHorizontal: 10,

@@ -10,7 +10,9 @@ import {
   Alert,
   StyleSheet,
   Image,
+  Platform,
 } from 'react-native';
+import Share from 'react-native-share';
 import { Icon, Label } from 'native-base';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -18,9 +20,20 @@ import storage from '@react-native-firebase/storage';
 import { showMessage } from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import { ScrollView } from 'react-native-gesture-handler';
-
 import ShopCards from '../components/ShopServicesCard';
 
+
+const url = '';
+const title = 'GO Car';
+const message = 'This is my Profile click to See..';
+const icon = 'data:<data_type>/<file_extension>;base64,<base64_data>';
+const options = Platform.select({
+  default: {
+    title,
+    subject: title,
+    message: `${message} ${url}`,
+  },
+});
 const userUID = auth().currentUser;
 const { width, height } = Dimensions.get('window');
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -59,7 +72,7 @@ export default function ProfileScreen({ navigation }) {
             // console.log(`Image URL ${Value}`);
             // Setup the user infromation into the firebase
             firestore()
-              .collection('srBasicInfromation')
+              .collection('userProfile')
               .doc(userUID.uid)
               .update({
                 logo: Value,
@@ -92,332 +105,178 @@ export default function ProfileScreen({ navigation }) {
 
   useEffect(() => {
     firestore()
-      .collection('srBasicInfromation')
+      .collection('userProfile')
       .doc(userUID.uid)
-      .onSnapshot(basicInfromation => {
-        firestore()
-          .collection('srShopInfromation')
-          .doc(userUID.uid)
-          .onSnapshot((shopBasicInfromation) => {
-            let tmp = {
-              ...basicInfromation.data(),
-              ...shopBasicInfromation.data()
-            };
-            setUserData(tmp)
-          })
+      .onSnapshot(data => {
+        setUserData(data.data());
       });
   }, []);
-
   useEffect(() => {
-    console.log(userData);
+    console.log(userData)
   }, [userData]);
-
-
-  
-
   return (
     <SafeAreaView
       style={{
         flex: 1,
         justifyContent: 'center',
+        backgroundColor: '#95dbfa'
       }}>
-      <View
-        style={{
-          height: 50,
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-        }}>
-        <TouchableOpacity
-          style={{
-            marginHorizontal: 10,
-            flexDirection: 'row',
-          }}
-          onPress={() => {
-            navigation.navigate('Edit Profile', { userData });
-          }}>
-          <Icon
-            type="FontAwesome5"
-            name="user-edit"
-            style={{ fontSize: 20, color: '#856bf8' }}></Icon>
-        </TouchableOpacity>
-        <TouchableOpacity
-          transparent
-          onPress={createTwoButtonAlert}
-          style={{ marginHorizontal: 15 }}>
-          <Text style={{ color: '#856bf8' }}>Logout</Text>
-        </TouchableOpacity>
-      </View>
-      <View
-        style={{
-          // flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginVertical: 20,
-        }}>
-        {/* Profile View */}
-        <View
-          style={{
-            borderRadius: 150,
-            height: height * 0.2,
-            width: width * 0.4,
-          }}>
-          {userData?.logo ? (
-            <Image
-              style={{
-                height: height * 0.2,
-                borderRadius: 300 / 2,
-                width: width * 0.38,
-              }}
-              source={{ uri: userData?.logo }}
-            />
-          ) : (
-            <Image
-              style={{
-                height: height * 0.2,
-                borderRadius: 300 / 2,
-                width: width * 0.38,
-              }}
-              source={require('../assets/img/profile.png')}
-            />
-          )}
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              bottom: -0,
-              right: -0,
-              width: 45,
-              height: 45,
-              borderRadius: 300 / 2,
-              backgroundColor: '#856bf8',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onPress={() => {
-              PickImage();
-            }}>
-            <Icon
-              type="AntDesign"
-              name="camera"
-              style={{
-                fontSize: 25,
-                color: '#000000',
-              }}></Icon>
-          </TouchableOpacity>
-        </View>
-      </View>
-      {/* Show the  Total Customer Request & Total Panding into the line*/}
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-          margin: 20,
-          padding: 10,
-          alignItems: 'center',
-          borderRadius: 10,
-          backgroundColor: '#FFFFFF',
-          elevation: 8,
-          borderColor: '#856bf8',
-        }}
-        disabled={true}>
-        <View
-          style={{
-            flex: 1,
-            marginHorizontal: 5,
-            alignItems: 'center',
-          }}>
-          <TouchableOpacity onPress={() => { setOption(true) }}>
-            <Icon
-              type="FontAwesome5"
-              name="store-alt"
-              style={{
-                fontSize: 25,
-                color: PIMARY_COLOR,
-                alignSelf: 'center',
-              }}></Icon>
-            <Text>Store Infromation</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            marginHorizontal: 5,
-            alignItems: 'center',
-          }}>
-          <TouchableOpacity onPress={() => { setOption(false) }}>
-            <Icon
-              type="FontAwesome5"
-              name="hand-holding-medical"
-              style={{
-                fontSize: 25,
-                color: PIMARY_COLOR,
-                alignSelf: 'center',
-              }}></Icon>
-            <Text>Services</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      {/* Show the Barber Profile Infromation*/}
-      <View
-        style={{
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Profile */}
+        <View style={{
           flex: 1,
-          margin: 10,
+          borderBottomLeftRadius: 30,
+          borderBottomRightRadius: 30,
+          backgroundColor: '#f4bf56',
+          elevation: 10,
         }}>
-        {
-          option ?
-            (
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <Label style={styles.labelStyle}>Name: {userData?.name}</Label>
-                <Label style={styles.labelStyle}>Email: {userData?.email}</Label>
-                <Label style={styles.labelStyle}>
-                  Phone Number: {userData?.optionalPhoneNo}
-                </Label>
-                <Label style={styles.labelStyle, {
-                  borderBottomWidth: 1,
-                  textAlign: 'center',
-                  marginTop: 10,
-                  color: PIMARY_COLOR,
-                  fontWeight: '700',
-                  fontSize: 20,
-                }}>Store Opening Time</Label>
-                <View style={styles.storeTimeStyle}>
-                  <View
+          <View style={{
+            flex: 1,
+            borderBottomLeftRadius: 40,
+            borderBottomRightRadius: 40,
+            backgroundColor: PIMARY_COLOR,
+            elevation: 5,
+          }}>
+            {/* Edit & logout */}
+            <View
+              style={{
+                height: 50,
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+              }}>
+              <TouchableOpacity
+                style={{
+                  marginHorizontal: 10,
+                  flexDirection: 'row',
+                }}
+                onPress={() => {
+                  navigation.navigate('EditProfileScreen', { userData });
+                }}>
+                <Icon
+                  type="FontAwesome5"
+                  name="user-edit"
+                  style={{ fontSize: 20, color: '#000000' }}></Icon>
+              </TouchableOpacity>
+              <TouchableOpacity
+                transparent
+                onPress={createTwoButtonAlert}
+                style={{ marginHorizontal: 15 }}>
+                <Text style={{ color: '#000000' }}>Logout</Text>
+              </TouchableOpacity>
+            </View>
+            {/* Logo */}
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginVertical: 50,
+              }}>
+              {/* Profile View */}
+              <View
+                style={{
+                  borderRadius: 150,
+                  height: height * 0.2,
+                  width: width * 0.4,
+                }}>
+                {userData?.logo ? (
+                  <Image
                     style={{
-                      flex: 1,
-                      marginHorizontal: 5,
-                      alignItems: 'center',
-                    }}>
-                    <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-                      <View style={{ flex: 1 }}>
-                        <Label style={{ alignSelf: 'center' }}>Monday</Label>
-                      </View>
-                      {userData?.monday?.OC ? (
-                        <View style={styles.LabelStyle}>
-                          <Text>{userData?.monday['C']}A.M</Text>
-                          <Label>To</Label>
-                          <Text>{userData?.monday['C']}P.M</Text>
-                        </View>
-                      ) : (
-                        <View style={styles.LabelStyle}>
-                          <Label style={{ color: 'red' }}>Close</Label>
-                        </View>
-                      )}
-                    </View>
+                      height: height * 0.2,
+                      borderRadius: 300 / 2,
+                      width: width * 0.38,
+                    }}
+                    source={{ uri: userData?.logo }}
+                  />
+                ) : (
+                  <Image
+                    style={{
+                      height: height * 0.2,
+                      borderRadius: 300 / 2,
+                      width: width * 0.38,
+                    }}
+                    source={require('../assets/img/profile.png')}
+                  />
+                )}
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    bottom: -0,
+                    right: -0,
+                    width: 45,
+                    height: 45,
+                    borderRadius: 300 / 2,
+                    backgroundColor: '#856bf8',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => {
+                    PickImage();
+                  }}>
+                  <Icon
+                    type="AntDesign"
+                    name="camera"
+                    style={{
+                      fontSize: 25,
+                      color: '#000000',
+                    }}></Icon>
+                </TouchableOpacity>
+              </View>
+            </View>
 
-                    <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-                      <View style={{ flex: 1 }}>
-                        <Label style={{ alignSelf: 'center' }}>Tuesday</Label>
-                      </View>
-                      {userData?.tuesday?.OC ? (
-                        <View style={styles.LabelStyle}>
-                          <Text>{userData?.tuesday['C']}P.M</Text>
-                          <Label>To</Label>
-                          <Text>{userData?.tuesday['C']}P.M</Text>
-                        </View>
-                      ) : (
-                        <View style={styles.LabelStyle}>
-                          <Label style={{ color: 'red' }}>Close</Label>
-                        </View>
-                      )}
-                    </View>
-                    <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-                      <View style={{ flex: 1 }}>
-                        <Label style={{ alignSelf: 'center' }}>Wednesday</Label>
-                      </View>
-                      {userData?.wednesday?.OC ? (
-                        <View style={styles.LabelStyle}>
-                          <Text>{userData?.wednesday['O']}A.M</Text>
-                          <Label>To</Label>
-                          <Text>{userData?.wednesday['C']}P.M</Text>
-                        </View>
-                      ) : (
-                        <View style={styles.LabelStyle}>
-                          <Label style={{ color: 'red' }}>Close</Label>
-                        </View>
-                      )}
-                    </View>
-                    <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-                      <View style={{ flex: 1 }}>
-                        <Label style={{ alignSelf: 'center' }}>Thursday</Label>
-                      </View>
-                      {userData?.thursday?.OC ? (
-                        <View style={styles.LabelStyle}>
-                          <Text>{userData?.thursday['O']}A.M</Text>
-                          <Label>To</Label>
-                          <Text>{userData?.thursday['C']}P.M</Text>
-                        </View>
-                      ) : (
-                        <View style={styles.LabelStyle}>
-                          <Label style={{ color: 'red' }}>Close</Label>
-                        </View>
-                      )}
-                    </View>
-                    <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-                      <View style={{ flex: 1 }}>
-                        <Label style={{ alignSelf: 'center' }}>Friday</Label>
-                      </View>
-                      {userData?.friday?.OC ? (
-                        <View style={styles.LabelStyle}>
-                          <Text>{userData?.friday['O']}A.M</Text>
-                          <Label>To</Label>
-                          <Text>{userData?.friday['C']}P.M</Text>
-                        </View>
-                      ) : (
-                        <View style={styles.LabelStyle}>
-                          <Label style={{ color: 'red' }}>Close</Label>
-                        </View>
-                      )}
-                    </View>
-                    <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-                      <View style={{ flex: 1 }}>
-                        <Label style={{ alignSelf: 'center' }}>Saturday</Label>
-                      </View>
-                      {userData?.saturday?.OC ? (
-                        <View style={styles.LabelStyle}>
-                          <Text>{userData?.saturday['O']}A.M</Text>
-                          <Label>To</Label>
-                          <Text>{userData?.saturday['C']}P.M</Text>
-                        </View>
-                      ) : (
-                        <View style={styles.LabelStyle}>
-                          <Label style={{ color: 'red' }}>Close</Label>
-                        </View>
-                      )}
-                    </View>
-                    <View style={{ flexDirection: 'row', marginVertical: 10 }}>
-                      <View style={{ flex: 1 }}>
-                        <Label style={{ alignSelf: 'center' }}>Sunday</Label>
-                      </View>
-                      {userData?.sunday?.OC ? (
-                        <View style={styles.LabelStyle}>
-                          <Text>{userData?.sunday['O']}A.M</Text>
-                          <Label>To</Label>
-                          <Text>{userData?.sunday['C']}P.M</Text>
-                        </View>
-                      ) : (
-                        <View style={styles.LabelStyle}>
-                          <Label style={{ color: 'red' }}>Close</Label>
-                        </View>
-                      )}
-                    </View>
-                  </View>
-                </View>
-                <Label style={styles.labelStyle}>
-                  Description: {userData?.description}
-                </Label>
-                <Label style={styles.labelStyle}>Address: {userData?.address}</Label>
-              </ScrollView>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+            <Label>TOTAL ORDER</Label>
+            <Label style={{ alignSelf: 'center' }}>50</Label>
+          </View>
+        </View>
+        {/* Total Buy */}
+        {/* Infromation */}
+        <View style={{
+          flex: 1,
+          marginTop: 30,
+          marginHorizontal: 20,
+          padding: 10
+        }}>
+          <View style={styles.cardLabel}>
+            <Text style={{ fontWeight: 'bold' }}>Name</Text>
+            <Text>{userData?.name}</Text>
+          </View>
+          <View style={styles.cardLabel}>
+            <Text style={{ fontWeight: 'bold' }}>Email</Text>
+            <Text>{userData?.email}</Text>
+          </View>
+          <View style={styles.cardLabel}>
+            <Text style={{ fontWeight: 'bold' }}>Phone No</Text>
+            <Text>{userData?.optionalPhoneNo}</Text>
+          </View>
+          <View style={styles.cardLabel}>
+            <Text style={{ fontWeight: 'bold' }}>Address</Text>
+            <Text>{userData?.address}</Text>
+          </View>
+          {/* Referal */}
+          <View style={[styles.thirdCardStyle, {
+            marginVertical: 20,
+          }]}>
+            <Text style={{ alignSelf: 'center', fontStyle: 'italic', fontSize: 20, fontWeight: '700' }}>EARN UP TO 500</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+              <View style={{ alignSelf: 'center' }}>
+                <Image style={{ height: 100, width: 120 }} source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/instahair-6aa4d.appspot.com/o/referal%2Fsunday.jpg?alt=media&token=b1ea85ba-1e47-48da-a413-29c49f320575' }} />
+              </View>
+              <View style={{ alignSelf: 'center' }}>
+                <TouchableOpacity onPress={()=>Share.open(options)} style={styles.ToucuableStype }>
+                  <Text style={{ fontStyle: 'italic', textAlign: 'center' }}>NOW</Text>
+                  <Icon
+                    type="FontAwesome5"
+                    name="bullhorn"
+                    style={{ fontSize: 20, marginHorizontal: 3, color: '#000000' }}></Icon>
+                </TouchableOpacity>
+              </View>
+            </View>
 
-            ) :
-            (
-              <ScrollView showsVerticalScrollIndicator={false}>
-                {/* <ShopServicesCard/> */}
-              </ScrollView>
-            )
-        }
-
-      </View>
+          </View>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -441,6 +300,15 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 30,
   },
+  ToucuableStype: {
+    borderWidth: 1, flexDirection: 'row', backgroundColor: '#f4bf56', borderRadius: 10, padding: 10
+  },
+  thirdCardStyle: {
+    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    marginHorizontal: 10,
+    padding: 10,
+  },
   labelStyle: {
     marginVertical: 10,
   },
@@ -451,5 +319,12 @@ const styles = StyleSheet.create({
   infromation: {
     flex: 1,
     alignItems: 'center',
+  },
+  cardLabel: {
+    marginBottom: 35,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderBottomWidth: .5,
+    paddingVertical: 4
   },
 });

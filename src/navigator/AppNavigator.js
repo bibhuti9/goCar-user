@@ -27,11 +27,10 @@ export default function AppNavigator() {
       // end={{x: 1, y: 1 }}
       colors={['#5ac9fb', '#FFFFFF']}
       style={style.viewStyle}>
-          <LottieView style={{
+          <Image style={{
               height: 200,
               width: 200,
-            }}  source={require('../assets/img/car-service.json')} autoPlay loop />
-      <Text style={{fontSize:30,fontWeight:'800'}}>GoCar</Text>
+            }}  source={require('../assets/playstore.png')} />
     </LinearGradient>
     )
     :

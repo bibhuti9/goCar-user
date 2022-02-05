@@ -7,6 +7,7 @@ import { ICON_COLOR } from '@env';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeStackNav from './HomeStackNav';
+import OrderScreen from '../screens/OrderScreen';
 import { Icon } from 'native-base';
 
 const DrawerTab = createDrawerNavigator();
@@ -51,6 +52,19 @@ export default function HomeBottomStack() {
                             }}></Icon>
                     ),
                 }} name="Home" component={HomeStackNav} />
+                <DrawerTab.Screen options={{
+                    title: 'Order',
+                    drawerIcon: ({ focused, size }) => (
+                        <Icon
+                            type="FontAwesome5"
+                            name="shopping-bag"
+                            style={{
+                                fontSize: 23,
+                                color: ICON_COLOR,
+                            }}></Icon>
+                    ),
+                }} name="order" component={OrderScreen} />
+
             </DrawerTab.Navigator>
             
         </>

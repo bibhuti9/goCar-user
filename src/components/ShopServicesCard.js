@@ -86,17 +86,8 @@ export default function ShopServicesCard(garageUID) {
             <TouchableOpacity
               style={styles.TouchableOpacityStyle}
               onPress={() => {
-                fetch('http://ac6e-43-248-34-193.ngrok.io/send-noti', {
-                  method: 'post',
-                  headers: {
-                    'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    token: garageToken,
-                  })
-                })
-                // setRnsheet(value);
-                // refRBSheet.current.open();
+                setRnsheet(value);
+                refRBSheet.current.open();
               }}>
               <Text
                 style={{
@@ -222,6 +213,7 @@ export default function ShopServicesCard(garageUID) {
                             createdAt: date.getTime(),
                             paymentMode: checked == "first" ? 'Cash On Delivery' : 'Net Payment'
                           }).then(() => {
+                            console.log('Serviced Booked')
                             refRBSheet.current.close();
                             showMessage({
                               message: "Booked Sucessfully!",
@@ -229,6 +221,15 @@ export default function ShopServicesCard(garageUID) {
                               type: "success",
                               icon: "success"
                             });
+                            fetch('http://ac6e-43-248-34-193.ngrok.io/send-noti', {
+                              method: 'post',
+                              headers: {
+                                'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify({
+                                token: garageToken,
+                              })
+                            })
 
                           }).catch((error) => {
                             showMessage({
