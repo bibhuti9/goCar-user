@@ -7,7 +7,7 @@ import LottieView from 'lottie-react-native';
 import { Icon, Text, Badge } from 'native-base';
 
 
-// Akssh
+
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
