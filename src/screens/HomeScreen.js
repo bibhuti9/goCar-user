@@ -1,4 +1,4 @@
-import React, {useState ,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { ICON_YELLOW_COLOR } from '@env';
 
 import {
@@ -8,6 +8,7 @@ import {
 } from 'native-base';
 import { Image, LogBox, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
 
 // Components
 import CardStoresList from '../components/cardStoresList';
@@ -16,11 +17,39 @@ import TrendingCardList from '../components/trendingCardList'
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
 
-  const moveToDisplayMap = (chategory)=>{
-    navigation.navigate('Display Map Shop List',{chategory});
+  const moveToDisplayMap = (chategory) => {
+    navigation.navigate('Display Map Shop List', { chategory });
   }
+
+
+
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      getFcmToken(); //<---- Add this
+      console.log('Authorization status:', authStatus);
+    }
+  };
+  const getFcmToken = async () => {
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      console.log(fcmToken);
+      console.log('Your Firebase Token is:', fcmToken);
+    } else {
+      console.log('Failed', 'No token received');
+    }
+  };
+  useEffect(() => {
+  
+    requestUserPermission();
+    console.log('fcm tocken end');
+  }, []);
 
   return (
     <View>
@@ -29,17 +58,17 @@ export default function HomeScreen({navigation}) {
           {/* Header */}
           <View style={style.headerICON}>
             {/* Left Drawer */}
-            <TouchableOpacity onPress={()=>navigation.openDrawer()}>
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
               <Icon
                 type="FontAwesome5"
                 name="bars"
                 style={{
                   fontSize: 23,
                   color: '#312f2f',
-               }}></Icon>
+                }}></Icon>
             </TouchableOpacity>
             {/* Right User Profile LOGO */}
-            <TouchableOpacity onPress={()=>navigation.navigate('profile')}>
+            <TouchableOpacity onPress={() => navigation.navigate('profile')}>
               <Icon
                 type="FontAwesome5"
                 name="user"
@@ -50,13 +79,13 @@ export default function HomeScreen({navigation}) {
                 }}></Icon>
             </TouchableOpacity>
           </View>
-          <View style={{marginHorizontal:10,marginVertical:10}}>
-            <Label style={{fontSize:25,fontWeight:'bold'}}>Hii</Label>
-            <Text style={{fontStyle:'italic'}}>Well Come To GO Car</Text>
+          <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+            <Label style={{ fontSize: 25, fontWeight: 'bold' }}>Hii</Label>
+            <Text style={{ fontStyle: 'italic' }}>Well Come To GO Car</Text>
           </View>
           {/* New Services Offer (Scroll View Horizontal) */}
           <View style={{ marginHorizontal: 10, marginVertical: 15, }}>
-              <TrendingCardList/>
+            <TrendingCardList />
           </View>
 
           {/* Category */}
@@ -64,7 +93,7 @@ export default function HomeScreen({navigation}) {
             <Text style={{ fontStyle: 'italic', fontSize: 20, }}>What You Looking’sFor</Text>
             {/* First List */}
             <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity style={[style.categoryCard, style.elevation]} onPress={()=>moveToDisplayMap('Charger')}>
+              <TouchableOpacity style={[style.categoryCard, style.elevation]} onPress={() => moveToDisplayMap('Charger')}>
                 <Image style={{ height: 60, width: 60, borderWidth: 1, }}
                   source={{ uri: 'https://firebasestorage.googleapis.com/v0/b/instahair-6aa4d.appspot.com/o/category_img%2Fbattery.png?alt=media&token=25e1dd52-ffa6-44c5-a97f-d8c8500500a8' }}
                 />
@@ -152,11 +181,11 @@ export default function HomeScreen({navigation}) {
 
           </View>
           {/* Stores List */}
-          <View style={{ marginHorizontal: 20 ,flexDirection:'row'}}>
+          <View style={{ marginHorizontal: 20, flexDirection: 'row' }}>
             <Text style={{ fontStyle: 'italic' }}>
               Store
             </Text>
-            <CardStoresList route={navigation}/>
+            <CardStoresList route={navigation} />
           </View>
         </ScrollView>
       </View>

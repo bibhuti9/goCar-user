@@ -102,7 +102,7 @@ export default function ProfileScreen({ navigation }) {
   }
   const [userData, setUserData] = useState([]);
   const [option, setOption] = useState(true);
-
+  const [totalOrder,setTotalOrder]=useState(0);
   useEffect(() => {
     firestore()
       .collection('userProfile')
@@ -110,6 +110,15 @@ export default function ProfileScreen({ navigation }) {
       .onSnapshot(data => {
         setUserData(data.data());
       });
+
+      firestore()
+      .collection('orders')
+      .where('userUID','==',userUID.uid)
+      .onSnapshot(data => {
+        setTotalOrder(data.size);
+      });
+
+      
   }, []);
   useEffect(() => {
     console.log(userData)
@@ -227,7 +236,7 @@ export default function ProfileScreen({ navigation }) {
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
             <Label>TOTAL ORDER</Label>
-            <Label style={{ alignSelf: 'center' }}>50</Label>
+            <Label style={{ alignSelf: 'center' }}>{totalOrder}</Label>
           </View>
         </View>
         {/* Total Buy */}

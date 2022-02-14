@@ -11,8 +11,6 @@ admin.initializeApp({
 
 app.post('/send-noti',(req,res)=>{
     console.log(req.body['token']);
-
-
     const message={
         token:req.body['token'],
         notification:{

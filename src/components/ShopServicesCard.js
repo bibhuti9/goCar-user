@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { PIMARY_COLOR } from '@env';
+import { PIMARY_COLOR,URL } from '@env';
 import { Linking, Platform } from 'react-native';
 
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -211,7 +211,8 @@ export default function ShopServicesCard(garageUID) {
                             srUserId: rnsheet.srUserId,
                             userUID: userUID.uid,
                             createdAt: date.getTime(),
-                            paymentMode: checked == "first" ? 'Cash On Delivery' : 'Net Payment'
+                            paymentMode: checked == "first" ? 'Cash On Delivery' : 'Net Payment',
+                            status:'PANDING'
                           }).then(() => {
                             console.log('Serviced Booked')
                             refRBSheet.current.close();
@@ -221,7 +222,7 @@ export default function ShopServicesCard(garageUID) {
                               type: "success",
                               icon: "success"
                             });
-                            fetch('http://ac6e-43-248-34-193.ngrok.io/send-noti', {
+                            fetch('http://0772-103-238-108-157.ngrok.io/send-noti', {
                               method: 'post',
                               headers: {
                                 'Content-Type': 'application/json'

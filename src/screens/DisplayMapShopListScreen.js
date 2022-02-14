@@ -7,6 +7,7 @@ import auth from '@react-native-firebase/auth';
 import MapView, { Marker, Callout, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import Geolocation from 'react-native-geolocation-service';
 import { Icon, Thumbnail } from 'native-base';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const userUID = auth().currentUser;
@@ -182,7 +183,7 @@ export default function MapScreen({route, navigation }) {
               </View>
             )
             :
-            <View style={{ marginTop: 10, flex: 1 }}>
+            <ScrollView showsVerticalScrollIndicator={false} style={{ marginTop: 10, flex: 1 }}>
               {
                 store.map((value, index) => {
                   return (
@@ -256,7 +257,7 @@ export default function MapScreen({route, navigation }) {
                   )
                 })
               }
-            </View>
+            </ScrollView>
         }
       </View>
     </>
@@ -277,6 +278,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     marginHorizontal: 10,
     borderRadius: 10,
+    marginVertical:3,
   },
   mapStyle: {
     position: 'absolute',
