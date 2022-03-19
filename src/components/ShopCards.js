@@ -39,13 +39,13 @@ export default function ShopCards() {
                 <>                    
                     <Card style={{ marginVertical: 4, }}>
                         <Card.Content>
-                            <Title>{value.name}</Title>
-                            <Paragraph>{value.catName}</Paragraph>
+                            <Title>{value.srname}</Title>
+                            <Paragraph>{value.srcatName}</Paragraph>
                         </Card.Content>
-                        <Card.Cover source={{ uri: value.images }} />
+                        <Card.Cover source={{ uri: value.srimages }} />
                         <Card.Actions>
-                            <Button>Price:{value.price}</Button>
-                            <Button>Warnty:{value.warnty}Year</Button>
+                            <Button>Price:{value.srprice}</Button>
+                            <Button>Warnty:{value.srwarnty}Year</Button>
                         </Card.Actions>
                     </Card>
                 </>

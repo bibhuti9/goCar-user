@@ -21,7 +21,7 @@ export default function OrderList({ navigation }) {
     useEffect(async () => {
         await firestore()
             .collection('orders')
-            .where('userUID', '==', userUID.uid)
+            .where('oruserUID', '==', userUID.uid)
             .onSnapshot((cardData) => {
                 if (cardData.size == 0) {
                     setCards([])
@@ -43,6 +43,10 @@ export default function OrderList({ navigation }) {
                 })
             });
     }, []);
+
+    useEffect(()=>{
+        console.log(cards);
+    },[cards])
 
     function calDate(val) {
         var date = new Date(val);
@@ -90,8 +94,8 @@ export default function OrderList({ navigation }) {
                                     <Card style={{ marginVertical: 4, }}>
                                         <Card.Content style={{ flexDirection: 'row', flex: 1, }}>
                                             <View style={{ flex: 2, }}>
-                                                <Title>{value.name}</Title>
-                                                <Paragraph>{value.catName}</Paragraph>
+                                                <Title>{value.srname}</Title>
+                                                <Paragraph>{value.srcatName}</Paragraph>
                                             </View>
                                             <View style={{
                                                 flex: 1,
@@ -99,15 +103,15 @@ export default function OrderList({ navigation }) {
                                                 justifyContent: 'center'
                                             }}>
                                                 <Text style={{
-                                                    color: value.status == 'PANDING' ? 'red' : 'green'
-                                                }}>{value.status}</Text>
-                                                <Text>{calDate(value.createdAt)}</Text>
+                                                    color: value.orstatus == 'PANDING' ? 'red' : 'green'
+                                                }}>{value.orstatus}</Text>
+                                                <Text>{calDate(value.orcreatedAt)}</Text>
                                             </View>
                                         </Card.Content>
-                                        <Card.Cover source={{ uri: value.images }} />
+                                        <Card.Cover source={{ uri: value.srimages }} />
                                         <Card.Actions>
-                                            <Button>Price:{value.price}</Button>
-                                            <Button>Warnty:{value.warnty}Year</Button>
+                                            <Button>Price:{value.srprice}</Button>
+                                            <Button>Warnty:{value.srwarnty}Year</Button>
                                             <Button>
                                                 <Icon
                                                     type="FontAwesome5"

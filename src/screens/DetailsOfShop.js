@@ -11,7 +11,6 @@ import {
   StyleSheet,
   Image,
 } from 'react-native';
-import FlashMessage from "react-native-flash-message";
 import { Icon, Label } from 'native-base';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -21,15 +20,23 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import ShopServicesCard from '../components/ShopServicesCard';
+import Accessories from '../components/Accessories';
+import messaging from '@react-native-firebase/messaging';
+
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
 
 const userUID = auth().currentUser;
 const { width, height } = Dimensions.get('window');
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
-export default function DetailsOfShop({route, navigation }) {
+export default function DetailsOfShop({ route, navigation }) {
+
   const [userData, setUserData] = useState([]);
-  const [option, setOption] = useState(true);
-    const garageUID=route.params['id'];
+  const [option, setOption] = useState("store");
+  const garageUID = route.params['id'];
+
+
   useEffect(() => {
     firestore()
       .collection('srBasicInfromation')
@@ -47,13 +54,17 @@ export default function DetailsOfShop({route, navigation }) {
           })
       });
   }, []);
+
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
         justifyContent: 'center',
       }}>
-      <FlashMessage position="top" />
       <View
         style={{
           // flex: 1,
@@ -110,7 +121,7 @@ export default function DetailsOfShop({route, navigation }) {
             marginHorizontal: 5,
             alignItems: 'center',
           }}>
-          <TouchableOpacity onPress={() => { setOption(true) }}>
+          <TouchableOpacity onPress={() => { setOption("store") }}>
             <Icon
               type="FontAwesome5"
               name="store-alt"
@@ -119,7 +130,7 @@ export default function DetailsOfShop({route, navigation }) {
                 color: PIMARY_COLOR,
                 alignSelf: 'center',
               }}></Icon>
-            <Text>Store Infromation</Text>
+            <Text>Store</Text>
           </TouchableOpacity>
         </View>
         <View
@@ -128,7 +139,7 @@ export default function DetailsOfShop({route, navigation }) {
             marginHorizontal: 5,
             alignItems: 'center',
           }}>
-          <TouchableOpacity onPress={() => { setOption(false) }}>
+          <TouchableOpacity onPress={() => { setOption("service") }}>
             <Icon
               type="FontAwesome5"
               name="hand-holding-medical"
@@ -140,6 +151,24 @@ export default function DetailsOfShop({route, navigation }) {
             <Text>Services</Text>
           </TouchableOpacity>
         </View>
+        <View
+          style={{
+            flex: 1,
+            marginHorizontal: 5,
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity onPress={() => { setOption("accessories") }}>
+            <Icon
+              type="FontAwesome5"
+              name="tools"
+              style={{
+                fontSize: 25,
+                color: PIMARY_COLOR,
+                alignSelf: 'center',
+              }}></Icon>
+            <Text>Accessories</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       {/* Show the Barber Profile Infromation*/}
       <View
@@ -148,7 +177,7 @@ export default function DetailsOfShop({route, navigation }) {
           margin: 10,
         }}>
         {
-          option ?
+          option == "store" ?
             (
               <ScrollView showsVerticalScrollIndicator={false}>
                 <Label style={styles.labelStyle}>Name: {userData?.name}</Label>
@@ -292,13 +321,25 @@ export default function DetailsOfShop({route, navigation }) {
                 <Label style={styles.labelStyle}>Address: {userData?.address}</Label>
               </ScrollView>
 
-            ) :
+            ) : null
+        }
+        {
+          option == "service" ?
             (
               <ScrollView showsVerticalScrollIndicator={false}>
-                <ShopServicesCard garageUID={garageUID}/>
+                <ShopServicesCard garageUID={garageUID} />
               </ScrollView>
-            )
+            ) : null
         }
+        {
+          option == "accessories" ?
+            (
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <Accessories garageUID={garageUID}/>
+              </ScrollView>
+            ) : null
+        }
+
 
       </View>
     </SafeAreaView>

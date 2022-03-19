@@ -63,10 +63,11 @@ export default function AuthNavigator() {
           }}
         >
           <View style={{flex:1}}>
-            <Image style={{
-              height: 200,
-              width: 200,
-            }}  source={require('../assets/img/logo.json')} />
+          <Image style={{
+            height: 130,
+            width: 130,
+            marginTop:80,
+          }} source={require('../assets/logo.png')} />
           </View>        
           <View style={{
             flex:1,

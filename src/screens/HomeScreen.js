@@ -14,6 +14,9 @@ import messaging from '@react-native-firebase/messaging';
 import CardStoresList from '../components/cardStoresList';
 import TrendingCardList from '../components/trendingCardList'
 
+
+import RNUpiPayment from 'react-native-upi-payment';
+
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();//Ignore all log notifications
 
@@ -22,8 +25,6 @@ export default function HomeScreen({ navigation }) {
   const moveToDisplayMap = (chategory) => {
     navigation.navigate('Display Map Shop List', { chategory });
   }
-
-
 
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();

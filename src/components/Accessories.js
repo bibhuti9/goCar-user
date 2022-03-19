@@ -31,7 +31,7 @@ import { Icon, Label } from 'native-base';
 const userUID = auth().currentUser;
 const { width, height } = Dimensions.get('window');
 
-export default function ShopServicesCard(garageUID) {
+export default function Accessories(garageUID) {
   const [checked, setChecked] = useState('first');
   const [cards, setCards] = useState([]);
   const [rnsheet, setRnsheet] = useState([]);
@@ -41,7 +41,7 @@ export default function ShopServicesCard(garageUID) {
 
   useEffect(() => {
     firestore()
-      .collection('srServices')
+      .collection('srAccessories')
       .where('srUserId', '==', garageUID['garageUID'])
       .onSnapshot(cardData => {
         setCards(cardData.docs.map((values) => ({ ...values.data(), ['id']: values.id })))
@@ -136,9 +136,9 @@ export default function ShopServicesCard(garageUID) {
 
         <Card style={{ marginVertical: 4 }}>
           <Card.Content>
-            <Title>{value.srname}</Title>
+            <Title>{value.asname}</Title>
           </Card.Content>
-          <Card.Cover source={{ uri: value.srimages }} />
+          <Card.Cover source={{ uri: value.asimages }} />
           <Card.Actions>
             <TouchableOpacity
               style={styles.TouchableOpacityStyle}
@@ -155,8 +155,8 @@ export default function ShopServicesCard(garageUID) {
                 Booked
               </Text>
             </TouchableOpacity>
-            <Button color="#e16e39">Price:{value.srprice}</Button>
-            <Button color="#e16e39">Warnty:{value.srwarnty}Year</Button>
+            <Button color="#e16e39">Price:{value.asprice}</Button>
+            <Button color="#e16e39">Warnty:{value.aswarnty}Year</Button>
           </Card.Actions>
         </Card>
         <RBSheet
@@ -189,23 +189,15 @@ export default function ShopServicesCard(garageUID) {
             }}>
               <View style={styles.cardLabel}>
                 <Text style={{ fontWeight: 'bold' }}>Name</Text>
-                <Text>{rnsheet.srname}</Text>
+                <Text>{rnsheet.asname}</Text>
               </View>
               <View style={styles.cardLabel}>
                 <Text style={{ fontWeight: 'bold' }}>Price</Text>
-                <Text>{rnsheet.srprice}</Text>
-              </View>
-              <View style={styles.cardLabel}>
-                <Text style={{ fontWeight: 'bold' }}>Pick Up Type</Text>
-                <Text>{rnsheet.srpickUpType}</Text>
+                <Text>{rnsheet.asprice}</Text>
               </View>
               <View style={styles.cardLabel}>
                 <Text style={{ fontWeight: 'bold' }}>Warranty</Text>
-                <Text>{rnsheet.srwarnty}</Text>
-              </View>
-              <View style={styles.cardLabel}>
-                <Text style={{ fontWeight: 'bold' }}>Time Taken</Text>
-                <Text>{rnsheet.srtmTaken}</Text>
+                <Text>{rnsheet.aswarnty}</Text>
               </View>
 
               <View style={{
@@ -215,7 +207,7 @@ export default function ShopServicesCard(garageUID) {
                 marginHorizontal: 20,
               }}>
                 <Text style={{ fontWeight: 'bold' }}>TOTAL PRICE</Text>
-                <Text style={{ fontWeight: 'bold' }}>{rnsheet.srprice}</Text>
+                <Text style={{ fontWeight: 'bold' }}>{rnsheet.asprice}</Text>
               </View>
             </View>
             <View style={{
@@ -262,11 +254,10 @@ export default function ShopServicesCard(garageUID) {
                     {
                       text: 'OK', onPress: () => {
                         if (checked == 'second') {
-                          
                           RNUpiPayment.initializePayment({
-                            vpa: 'vishal7984@paytm', // or can be john@ybl or mobileNo@upi
-                            payeeName: 'Vishal Gupta',
-                            amount: rnsheet.srprice,
+                            vpa: 'swainbibhuti362@okaxis', // or can be john@ybl or mobileNo@upi
+                            payeeName: 'Bibhuti Swain',
+                            amount: '1',
                             transactionRef: 'aasf-332-aoei-fn'
                           }, () => {
 
