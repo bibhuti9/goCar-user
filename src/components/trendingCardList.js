@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { Icon, View } from 'native-base';
 import firestore from '@react-native-firebase/firestore';
 import { Text, TouchableOpacity, Image, FlatList, StyleSheet } from 'react-native';
 
@@ -27,14 +27,17 @@ export default function TrendingCardList() {
                 ({ item }) => {
                     return (
                         <TouchableOpacity key={item.id} style={style.secondLable}>
-                            <Text style={{
-                                width: 100
-                            }}>{item.name}</Text>
-                            <Image style={{
-                                height: 50,
-                                width: 50,
-                                flex: 1,
-                            }} source={{ uri: item.icon }} />
+                            <View style={{flexDirection:'row'}}>
+                                <Text style={{
+                                    width: 100,
+                                    alignSelf: 'center'
+                                }}>{item.name}</Text>
+                                <Image style={{
+                                    height: 130,
+                                    width: 130,
+                                    flex: 1,
+                                }} source={{ uri: item.icon }} />
+                            </View>
                         </TouchableOpacity>
                     )
                 }
@@ -44,10 +47,9 @@ export default function TrendingCardList() {
 }
 const style = StyleSheet.create({
     secondLable: {
-      flexDirection: 'row',
-      padding: 15,
-      backgroundColor: '#ffffff',
-      marginHorizontal: 5,
-      borderRadius: 10,
+        paddingHorizontal:8,
+        backgroundColor: '#ffffff',
+        marginHorizontal: 5,
+        borderRadius: 10,
     },
-  })
+})

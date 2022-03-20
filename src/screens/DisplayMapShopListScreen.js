@@ -20,8 +20,6 @@ export default function MapScreen({route, navigation }) {
 
   const [store, setStore] = useState([]);
   
-  var character = route.params['chategory'];
-
   useEffect(() => {
     firestore()
       .collection('srBasicInfromation')
@@ -135,7 +133,6 @@ export default function MapScreen({route, navigation }) {
                     mapType={mapType}
                     enableHighAccuracy={true}
                     showsCompass={true}
-                    showsMyLocationButton={true}
                     showsMyLocationButton={true}
                     followsUserLocation={true}
                     showsUserLocation={true}
