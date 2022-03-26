@@ -7,7 +7,7 @@ const initialState = {
 export const navSlice = createSlice({
     name:"nav",
     initialState,
-    reducer:{
+    reducers:{
         setPrice:(state,action)=>{
             state.price=action.payload;
         }

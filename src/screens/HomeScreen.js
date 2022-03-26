@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useDispatch} from 'react-redux'; 
 import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 
@@ -17,14 +18,19 @@ import messaging from '@react-native-firebase/messaging';
 import CardStoresList from '../components/cardStoresList';
 import TrendingCardList from '../components/trendingCardList';
 
+// import {setPrice} from '../../slices/navSlice';
+
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 export default function HomeScreen({ navigation }) {
+
+  // Redux
+  const dispatch = useDispatch();
+
   const moveToDisplayMap = chategory => {
     navigation.navigate('ServicesListScreen', { chategory });
   };
-
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -49,6 +55,16 @@ export default function HomeScreen({ navigation }) {
     requestUserPermission();
     console.log('fcm tocken end');
   }, []);
+
+
+  // Set Redux price value
+  // useEffect(()=>{
+  //   dispatch(
+  //     setPrice(
+  //       {price:200}
+  //     )
+  //   );
+  // },[]);
 
   return (
     <View>
@@ -199,7 +215,7 @@ export default function HomeScreen({ navigation }) {
                   alignContent: 'center',
                   justifyContent: 'center',
                 }]}
-                onPress={() => moveToDisplayMap('Document')}>
+                onPress={() => moveToDisplayMap('All')}>
                 <Icon
                   type="FontAwesome5"
                   name="arrow-right"

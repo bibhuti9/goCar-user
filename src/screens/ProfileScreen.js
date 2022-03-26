@@ -22,6 +22,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { ScrollView } from 'react-native-gesture-handler';
 import ShopCards from '../components/ShopServicesCard';
 
+// import { selectPrice } from '../../slices/navSlice';
+// import { useSelector } from 'react-redux';
 
 const url = '';
 const title = 'GO Car';
@@ -39,6 +41,12 @@ const { width, height } = Dimensions.get('window');
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
 export default function ProfileScreen({ navigation }) {
+
+  // Redux
+  // const reduxPrice=useSelector(selectPrice);
+  // useEffect(()=>{
+  // console.log(reduxPrice.price);
+  // },[])
   const createTwoButtonAlert = () =>
     Alert.alert('Alert', 'Are You Sure To Logout', [
       {
@@ -113,7 +121,7 @@ export default function ProfileScreen({ navigation }) {
 
       firestore()
       .collection('orders')
-      .where('userUID','==',userUID.uid)
+      .where('oruserUID','==',userUID.uid)
       .onSnapshot(data => {
         setTotalOrder(data.size);
       });
@@ -235,7 +243,7 @@ export default function ProfileScreen({ navigation }) {
 
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-            <Label>TOTAL ORDER</Label>
+            <Label>TOTAL ORDER </Label>
             <Label style={{ alignSelf: 'center' }}>{totalOrder}</Label>
           </View>
         </View>

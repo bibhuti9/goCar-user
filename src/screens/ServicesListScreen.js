@@ -35,20 +35,30 @@ export default function ServicesListScreen({ route, navigation }) {
   const [checked, setChecked] = useState('first');
   const refRBSheet = useRef();
 
-  var chategory = route.params['chategory'];
   const [data, setData] = useState([{ "id": "HEBMJAZw8Tt9UFhOgaQQ", "srUserId": "2PqGdTcVmjP5CKaklnibKByGd0q2", "srcatName": "Wheel", "srcreatedAt": 1647683645477, "sressentialService": "This is a car wheel service ", "srimages": "https://firebasestorage.googleapis.com/v0/b/instahair-6aa4d.appspot.com/o/product%2Ffront-view-male-mechanic-working.jpg?alt=media&token=03880ef1-e508-49c0-838f-09a54de6a99f", "srisDeleted": false, "srisDisplay": true, "srname": "Car wheel", "srpickUpType": "Free", "srprice": "2000", "srtmTaken": "0 Day,1 Hours,0 Minutes", "srwarnty": "4" }, { "id": "gw4eS030yfDrUdSsFfdJ", "srUserId": "2PqGdTcVmjP5CKaklnibKByGd0q2", "srcatName": "Wheel", "srcreatedAt": 1647684450462, "sressentialService": "Tyre condition & tyre depth Tyre pressure and adjust", "srimages": "https://firebasestorage.googleapis.com/v0/b/instahair-6aa4d.appspot.com/o/product%2Ffront-view-male-mechanic-working.jpg?alt=media&token=03880ef1-e508-49c0-838f-09a54de6a99f", "srisDeleted": false, "srisDisplay": true, "srname": "Car wheels ", "srpickUpType": "Paid", "srprice": "8000", "srtmTaken": "0 Day,0 Hours,0 Minutes", "srwarnty": "5" }]);
   const [visible, setVisible] = React.useState(false)
   const [modelView, setModelView] = useState([]);
   const [showSuccessMsg, setShowSuccessMsg] = useState(false);
   useEffect(() => {
-    // firestore()
-    //   .collection('srServices')
-    //   .where('srcatName', '==', chategory)
-    //   .onSnapshot(service => {
-    //     setData(
-    //       service.docs.map(values => ({ ...values.data(), ['id']: values.id })),
-    //     );
-    //   });
+    var chategory = route.params['chategory'];
+    if (chategory == "All") {
+      firestore()
+        .collection('srServices')
+        .onSnapshot(service => {
+          setData(
+            service.docs.map(values => ({ ...values.data(), ['id']: values.id })),
+          );
+        });
+    } else {
+      firestore()
+        .collection('srServices')
+        .where('srcatName', '==', chategory)
+        .onSnapshot(service => {
+          setData(
+            service.docs.map(values => ({ ...values.data(), ['id']: values.id })),
+          );
+        });
+    }
   }, []);
   // useEffect(() => {
   //   console.log(data);
@@ -171,7 +181,30 @@ export default function ServicesListScreen({ route, navigation }) {
       </View>
       <ShowSuccessMsh setShowSuccessMsg={setShowSuccessMsg} showSuccessMsg={showSuccessMsg} />
       {data.length == 0
-        ? null
+        ? (
+          <View style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignContent: 'center',
+            height: 500,
+          }}>
+            <TouchableOpacity style={{ flexDirection: 'row' }}>
+              <Text style={{ alignSelf: 'center', marginHorizontal: 10, fontSize: 20 }}>No Any Releated Services!</Text>
+
+            </TouchableOpacity>
+            <TouchableOpacity style={{
+              backgroundColor: '#f4bf56',
+              borderRadius: 10,
+              padding: 10,
+              marginVertical: 30,
+            }} onPress={() => navigation.goBack()}>
+              <Text style={{ fontStyle: 'italic', textAlign: 'center' }}>
+                Find Other Services!
+              </Text>
+            </TouchableOpacity>
+
+          </View>
+        )
         : data.map(value => {
           return (
             <View style={[style.categoryCard, style.elevation]}>
@@ -392,15 +425,15 @@ export default function ServicesListScreen({ route, navigation }) {
                               .doc(modelView.srUserId)
                               .onSnapshot(srUser => {
 
-                                fetch('http://2783-103-206-138-156.ngrok.io/send-noti', {
-                                  method: 'post',
-                                  headers: {
-                                    'Content-Type': 'application/json'
-                                  },
-                                  body: JSON.stringify({
-                                    token: srUser.data().deviceToken,
-                                  })
-                                })
+                                // fetch('http://2783-103-206-138-156.ngrok.io/send-noti', {
+                                //   method: 'post',
+                                //   headers: {
+                                //     'Content-Type': 'application/json'
+                                //   },
+                                //   body: JSON.stringify({
+                                //     token: srUser.data().deviceToken,
+                                //   })
+                                // })
                               })
                           }).catch((error) => {
                             showMessage({

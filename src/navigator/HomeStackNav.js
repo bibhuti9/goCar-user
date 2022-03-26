@@ -16,7 +16,7 @@ export default function HomeStackNav(){
             <Tab.Screen name="About Garage" component={DetailsOfShop}/>
             <Tab.Screen name="profile" component={ProfileScreen}/>
             <Tab.Screen name='EditProfileScreen' component={EditProfileScreen}/>
-            <Tab.Screen name='ServicesListScreen' component={ServicesListScreen}/>            
+            <Tab.Screen name='ServicesListScreen' component={ServicesListScreen}/> 
         </Tab.Navigator>
     )
 }
